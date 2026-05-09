@@ -136,6 +136,32 @@ body {
   box-shadow: var(--shadow-lg);
 }
 
+/* Theme Toggle Button */
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.theme-toggle:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.1) rotate(20deg);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
 /* Hero Section */
 .hero {
   position: relative;
@@ -983,7 +1009,21 @@ section {
   }
 
   .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nav-links a:not(.nav-cta) {
     display: none;
+  }
+
+  .nav-links .theme-toggle {
+    display: flex;
+  }
+
+  .nav-links .nav-cta {
+    display: inline-block;
   }
 
   .hero {
@@ -1079,3 +1119,247 @@ section {
   }
 }
 
+/* ========================================
+   DARK MODE STYLES
+   ======================================== */
+
+.dark-mode {
+  /* Dark Mode Color Overrides */
+  --bg: #0f172a;
+  --bg-secondary: #1e293b;
+  --white: #0f172a;
+  --text: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --border: #334155;
+  
+  /* Keep primary colors but adjust for dark backgrounds */
+  --primary: #2dd4bf;
+  --primary-light: #5eead4;
+  --primary-dark: #14b8a6;
+  --accent: #5eead4;
+  --accent-light: #99f6e4;
+}
+
+/* Dark Mode Body */
+.dark-mode body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Dark Mode Navbar */
+.dark-mode .navbar {
+  background: rgba(15, 23, 42, 0.95);
+  border-bottom-color: var(--border);
+}
+
+.dark-mode .nav-links a {
+  color: var(--text);
+}
+
+.dark-mode .nav-links a:hover {
+  color: var(--primary);
+}
+
+.dark-mode .theme-toggle {
+  background: var(--bg-secondary);
+  border-color: var(--border);
+}
+
+.dark-mode .theme-toggle:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Dark Mode Hero */
+.dark-mode .hero-bg {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.dark-mode .gradient-orb {
+  opacity: 0.3;
+}
+
+.dark-mode .grid-overlay {
+  opacity: 0.1;
+}
+
+.dark-mode .hero-badge {
+  background: rgba(45, 212, 191, 0.15);
+  border-color: rgba(45, 212, 191, 0.3);
+}
+
+.dark-mode .hero-stats {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: var(--border);
+}
+
+.dark-mode .stat-divider {
+  background: var(--border);
+}
+
+/* Dark Mode Sections */
+.dark-mode .problem-section,
+.dark-mode .features-section,
+.dark-mode .contact-section {
+  background: var(--bg);
+}
+
+.dark-mode .solution-section,
+.dark-mode .audience-section {
+  background: var(--bg-secondary);
+}
+
+/* Dark Mode Cards */
+.dark-mode .problem-card,
+.dark-mode .feature-card {
+  background: var(--bg-secondary);
+  border-color: var(--border);
+}
+
+.dark-mode .problem-card:hover,
+.dark-mode .feature-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 20px 25px -5px rgba(45, 212, 191, 0.2);
+}
+
+.dark-mode .audience-card {
+  background: var(--bg);
+  border-color: var(--border);
+}
+
+.dark-mode .audience-card:hover {
+  border-color: var(--primary);
+}
+
+/* Dark Mode Highlight Box */
+.dark-mode .highlight-box {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+}
+
+/* Dark Mode Monitor Display */
+.dark-mode .monitor-display {
+  background: var(--bg-secondary);
+  border-color: var(--border);
+}
+
+.dark-mode .monitor-header {
+  border-bottom-color: var(--border);
+}
+
+.dark-mode .metric-bar {
+  background: var(--bg);
+}
+
+/* Dark Mode Form */
+.dark-mode .contact-form {
+  background: var(--bg-secondary);
+  border-color: var(--border);
+}
+
+.dark-mode .form-group input,
+.dark-mode .form-group textarea {
+  background: var(--bg);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.dark-mode .form-group input::placeholder,
+.dark-mode .form-group textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.dark-mode .form-group input:focus,
+.dark-mode .form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.2);
+}
+
+/* Dark Mode Footer */
+.dark-mode .footer {
+  background: #020617;
+  border-top: 1px solid var(--border);
+}
+
+.dark-mode .footer-logo {
+  filter: brightness(0) invert(1);
+}
+
+/* Dark Mode Buttons */
+.dark-mode .primary-button {
+  background: var(--primary);
+  color: #0f172a;
+}
+
+.dark-mode .primary-button:hover {
+  background: var(--primary-light);
+}
+
+.dark-mode .secondary-button {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.dark-mode .secondary-button:hover {
+  background: var(--primary);
+  color: #0f172a;
+}
+
+.dark-mode .submit-button {
+  background: var(--primary);
+  color: #0f172a;
+}
+
+.dark-mode .submit-button:hover {
+  background: var(--primary-light);
+}
+
+/* Dark Mode Scroll Indicator */
+.dark-mode .scroll-mouse {
+  border-color: var(--primary);
+}
+
+.dark-mode .scroll-wheel {
+  background: var(--primary);
+}
+
+/* Dark Mode Text Colors */
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode .section-title,
+.dark-mode .hero-title,
+.dark-mode .problem-card h3,
+.dark-mode .feature-card h3 {
+  color: var(--text);
+}
+
+.dark-mode p,
+.dark-mode .hero-subtitle,
+.dark-mode .section-description,
+.dark-mode .problem-card p,
+.dark-mode .feature-card p,
+.dark-mode .solution-description,
+.dark-mode .solution-point p,
+.dark-mode .contact-description {
+  color: var(--text-secondary);
+}
+
+/* Dark Mode Logo on Dark Background */
+.dark-mode .logo-container img {
+  transition: filter 0.3s ease;
+}
+
+/* Smooth theme transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Preserve animation transitions */
+.hero-content,
+.observe,
+.gradient-orb,
+.feature-card,
+.scroll-indicator {
+  transition: opacity 0.8s ease, transform 0.8s ease, background-color 0.3s ease !important;
+}

@@ -5,12 +5,37 @@ function App() {
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState({});
   const [formData, setFormData] = useState({ name: '', email: '', organization: '', message: '' });
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Dark mode effect
+  useEffect(() => {
+    // Check localStorage for saved preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark-mode');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark-mode');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -79,13 +104,16 @@ function App() {
       <nav className="navbar">
         <div className="nav-content">
           <div className="logo-container">
-            <img src="/logo.png" alt="PureSight Logo" className="logo" />
+            <img src={isDarkMode ? "./public/logo-dark.jpeg" : "/logo.png"} alt="PureSight Logo" className="logo" />
             <span className="brand-name">PureSight</span>
           </div>
           <div className="nav-links">
             <a href="#problem">Problem</a>
             <a href="#solution">Solution</a>
             <a href="#features">Features</a>
+            <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
+              {isDarkMode ? '☀️' : '🌙'}
+            </button>
             <a href="#contact" className="nav-cta">Get Started</a>
           </div>
         </div>
@@ -389,7 +417,7 @@ function App() {
           <div className="footer-content">
             <div className="footer-brand">
               <div className="logo-container">
-                <img src="/logo.png" alt="PureSight Logo" className="logo" />
+                <img src={isDarkMode ? "./public/logo-dark.jpeg" : "/logo.png"} alt="PureSight Logo" className="logo footer-logo" />
                 <span className="brand-name">PureSight</span>
               </div>
               <p className="footer-tagline">Making Water Quality Visible</p>
