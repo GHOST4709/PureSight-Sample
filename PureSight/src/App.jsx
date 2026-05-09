@@ -104,7 +104,7 @@ function App() {
       <nav className="navbar">
         <div className="nav-content">
           <div className="logo-container">
-            <img src={isDarkMode ? "./public/logo-dark.jpeg" : "/logo.png"} alt="PureSight Logo" className="logo" />
+            <img src={isDarkMode ? "/logo-dark.jpeg" : "/logo.png"} alt="PureSight Logo" className="logo" />
             <span className="brand-name">PureSight</span>
           </div>
           <div className="nav-links">
@@ -417,7 +417,7 @@ function App() {
           <div className="footer-content">
             <div className="footer-brand">
               <div className="logo-container">
-                <img src={isDarkMode ? "./public/logo-dark.jpeg" : "/logo.png"} alt="PureSight Logo" className="logo footer-logo" />
+                <img src={isDarkMode ? " /logo-dark.jpeg" : "/logo.png"} alt="PureSight Logo" className="logo footer-logo" />
                 <span className="brand-name">PureSight</span>
               </div>
               <p className="footer-tagline">Making Water Quality Visible</p>
