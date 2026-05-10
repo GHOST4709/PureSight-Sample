@@ -3,12 +3,34 @@ import './App.css';
 
 function App() {
   const [scrollY, setScrollY] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [isVisible, setIsVisible] = useState({});
   const [formData, setFormData] = useState({ name: '', email: '', organization: '', message: '' });
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    const handleScroll = () => {
+      const scrolled = window.scrollY;
+      const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrolled / windowHeight) * 100;
+      
+      setScrollY(scrolled);
+      setScrollProgress(progress);
+      
+      // Add scrolled class to navbar
+      const navbar = document.querySelector('.navbar');
+      if (scrolled > 50) {
+        navbar?.classList.add('scrolled');
+      } else {
+        navbar?.classList.remove('scrolled');
+      }
+      
+      // Show/hide back to top button
+      setShowBackToTop(scrolled > 400);
+    };
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -21,6 +43,13 @@ function App() {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark-mode');
     }
+    
+    // Hide loader after content loads
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -37,19 +66,27 @@ function App() {
     setIsDarkMode(!isDarkMode);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible((prev) => ({ ...prev, [entry.target.id]: true }));
+            // Add 'visible' class for CSS animations
+            entry.target.classList.add('visible');
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
     );
 
     document.querySelectorAll('.observe').forEach((el) => observer.observe(el));
+    document.querySelectorAll('.animate-on-scroll').forEach((el) => observer.observe(el));
+    
     return () => observer.disconnect();
   }, []);
 
@@ -100,11 +137,27 @@ function App() {
 
   return (
     <div className="app">
+      {/* Preloader */}
+      {isLoading && (
+        <div className="preloader">
+          <div className="preloader-content">
+            <img src={isDarkMode ? "/logo-dark.png." : "/logo.png"} alt="PureSight" className="preloader-logo" />
+            <div className="loading-bar">
+              <div className="loading-fill"></div>
+            </div>
+            <p className="loading-text">Making Water Quality Visible</p>
+          </div>
+        </div>
+      )}
+      
+      {/* Scroll Progress Indicator */}
+      <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }}></div>
+      
       {/* Navigation */}
       <nav className="navbar">
         <div className="nav-content">
           <div className="logo-container">
-            <img src={isDarkMode ? "/logo-dark.jpeg" : "/logo.png"} alt="PureSight Logo" className="logo" />
+            <img src={isDarkMode ? "/logo-dark.png" : "/logo.png"} alt="PureSight Logo" className="logo" />
             <span className="brand-name">PureSight</span>
           </div>
           <div className="nav-links">
@@ -122,28 +175,44 @@ function App() {
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-bg">
-          <div className="gradient-orb orb-1"></div>
-          <div className="gradient-orb orb-2"></div>
-          <div className="gradient-orb orb-3"></div>
+          <div 
+            className="gradient-orb orb-1" 
+            style={{ transform: `translate(${scrollY * 0.1}px, ${scrollY * 0.15}px)` }}
+          ></div>
+          <div 
+            className="gradient-orb orb-2" 
+            style={{ transform: `translate(${-scrollY * 0.08}px, ${scrollY * 0.12}px)` }}
+          ></div>
+          <div 
+            className="gradient-orb orb-3" 
+            style={{ transform: `translate(${scrollY * 0.05}px, ${-scrollY * 0.1}px)` }}
+          ></div>
           <div className="grid-overlay"></div>
+          
+          {/* Floating particles */}
+          <div className="particle particle-1"></div>
+          <div className="particle particle-2"></div>
+          <div className="particle particle-3"></div>
+          <div className="particle particle-4"></div>
+          <div className="particle particle-5"></div>
         </div>
 
         <div className="hero-content">
-          <div className="hero-badge">IoT-Based Water Monitoring</div>
-          <h1 className="hero-title">
+          <div className="hero-badge animate-on-scroll" data-delay="0">IoT-Based Water Monitoring</div>
+          <h1 className="hero-title animate-on-scroll" data-delay="100">
             Making Water Quality
             <span className="highlight"> Visible</span>
           </h1>
-          <p className="hero-subtitle">
+          <p className="hero-subtitle animate-on-scroll" data-delay="200">
             End the guessing game. PureSight brings real-time transparency to water quality in public spaces — 
             monitor filter health, UV lamp status, and water safety at a glance.
           </p>
-          <div className="hero-cta">
+          <div className="hero-cta animate-on-scroll" data-delay="300">
             <a href="#contact" className="primary-button">Request a Demo</a>
             <a href="#problem" className="secondary-button">Learn More →</a>
           </div>
 
-          <div className="hero-stats">
+          <div className="hero-stats animate-on-scroll" data-delay="400">
             <div className="stat-item">
               <div className="stat-number">100%</div>
               <div className="stat-label">Transparency</div>
@@ -180,7 +249,8 @@ function App() {
           </div>
 
           <div className="problem-grid">
-            <div className="problem-card">
+            <div className="problem-card animate-on-scroll" data-delay="0">
+              <div className="card-glow"></div>
               <div className="problem-icon-wrapper">
                 <div className="problem-icon">❓</div>
               </div>
@@ -188,7 +258,8 @@ function App() {
               <p>Is the filter working? When was it last replaced? Whether the UV lamp is functioning? Nobody knows.</p>
             </div>
 
-            <div className="problem-card">
+            <div className="problem-card animate-on-scroll" data-delay="100">
+              <div className="card-glow"></div>
               <div className="problem-icon-wrapper">
                 <div className="problem-icon">🤝</div>
               </div>
@@ -196,7 +267,8 @@ function App() {
               <p>Institutions get blamed for unsafe water even when it's safe. People are forced to trust blindly or avoid water entirely.</p>
             </div>
 
-            <div className="problem-card">
+            <div className="problem-card animate-on-scroll" data-delay="200">
+              <div className="card-glow"></div>
               <div className="problem-icon-wrapper">
                 <div className="problem-icon">⚠️</div>
               </div>
@@ -206,7 +278,7 @@ function App() {
           </div>
 
           <div className="problem-highlight">
-            <div className="highlight-box">
+            <div className="highlight-box animate-on-scroll" data-delay="0">
               <p className="highlight-text">
                 "PureSight ends the blame game by making water quality <strong>visible, verifiable, and transparent</strong>."
               </p>
@@ -219,7 +291,7 @@ function App() {
       <section className="solution-section observe" id="solution">
         <div className="container">
           <div className="solution-layout">
-            <div className="solution-text">
+            <div className="solution-text animate-on-scroll slide-in-left" data-delay="0">
               <span className="section-tag">The Solution</span>
               <h2 className="section-title">Transparency You Can See</h2>
               <p className="solution-description">
@@ -252,7 +324,7 @@ function App() {
               </div>
             </div>
 
-            <div className="solution-visual">
+            <div className="solution-visual animate-on-scroll slide-in-right" data-delay="200">
               <div className="monitor-display">
                 <div className="monitor-header">
                   <div className="monitor-status"></div>
@@ -417,7 +489,7 @@ function App() {
           <div className="footer-content">
             <div className="footer-brand">
               <div className="logo-container">
-                <img src={isDarkMode ? " /logo-dark.jpeg" : "/logo.png"} alt="PureSight Logo" className="logo footer-logo" />
+                <img src={isDarkMode ? "/logo.png" : "/logo.png"} alt="PureSight Logo" className="logo footer-logo" />
                 <span className="brand-name">PureSight</span>
               </div>
               <p className="footer-tagline">Making Water Quality Visible</p>
@@ -434,6 +506,13 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <button onClick={scrollToTop} className="back-to-top" aria-label="Back to top">
+          ↑
+        </button>
+      )}
     </div>
   );
 }
