@@ -343,6 +343,301 @@ body {
 
 .app {
   min-height: 100vh;
+  position: relative;
+}
+
+/* ========================================
+   INTERACTIVE WATER BACKGROUND
+   ======================================== */
+.water-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fafafa 0%, #f0fdfc 100%);
+  pointer-events: none;
+}
+
+.dark-mode .water-background {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* Animated water layers */
+.water-layer {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  opacity: 0.15;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(45, 212, 191, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(26, 127, 122, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(94, 234, 212, 0.2) 0%, transparent 50%);
+}
+
+.water-layer-1 {
+  animation: waterFlow1 25s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.water-layer-2 {
+  animation: waterFlow2 30s ease-in-out infinite;
+  animation-delay: -5s;
+  opacity: 0.1;
+}
+
+.water-layer-3 {
+  animation: waterFlow3 35s ease-in-out infinite;
+  animation-delay: -10s;
+  opacity: 0.08;
+}
+
+@keyframes waterFlow1 {
+  0%, 100% {
+    transform: translate(0%, 0%) rotate(0deg);
+  }
+  33% {
+    transform: translate(-5%, -5%) rotate(5deg);
+  }
+  66% {
+    transform: translate(-10%, 5%) rotate(-3deg);
+  }
+}
+
+@keyframes waterFlow2 {
+  0%, 100% {
+    transform: translate(0%, 0%) rotate(0deg) scale(1.1);
+  }
+  50% {
+    transform: translate(-8%, -8%) rotate(-8deg) scale(1.15);
+  }
+}
+
+@keyframes waterFlow3 {
+  0%, 100% {
+    transform: translate(0%, 0%) rotate(0deg) scale(1.05);
+  }
+  33% {
+    transform: translate(5%, -5%) rotate(3deg) scale(1.1);
+  }
+  66% {
+    transform: translate(-5%, 10%) rotate(-5deg) scale(1.08);
+  }
+}
+
+/* Cursor glow effect - follows mouse */
+.cursor-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(45, 212, 191, 0.15) 0%,
+    rgba(45, 212, 191, 0.08) 30%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  filter: blur(40px);
+}
+
+.dark-mode .cursor-glow {
+  background: radial-gradient(
+    circle,
+    rgba(94, 234, 212, 0.2) 0%,
+    rgba(94, 234, 212, 0.1) 30%,
+    transparent 70%
+  );
+}
+
+/* Click ripple effect */
+.water-ripple {
+  position: fixed;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(45, 212, 191, 0.4) 0%,
+    rgba(45, 212, 191, 0.2) 30%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+  animation: rippleExpand 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.dark-mode .water-ripple {
+  background: radial-gradient(
+    circle,
+    rgba(94, 234, 212, 0.5) 0%,
+    rgba(94, 234, 212, 0.3) 30%,
+    transparent 70%
+  );
+}
+
+@keyframes rippleExpand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    width: 600px;
+    height: 600px;
+    opacity: 0;
+  }
+}
+
+/* Floating bubbles - like underwater */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.8),
+    rgba(45, 212, 191, 0.3)
+  );
+  opacity: 0.4;
+  box-shadow: 
+    inset 0 0 20px rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(45, 212, 191, 0.2);
+  animation: bubbleFloat 10s ease-in-out infinite;
+}
+
+.bubble-1 {
+  width: 60px;
+  height: 60px;
+  left: 10%;
+  bottom: -100px;
+  animation-duration: 12s;
+  animation-delay: 0s;
+}
+
+.bubble-2 {
+  width: 40px;
+  height: 40px;
+  left: 25%;
+  bottom: -100px;
+  animation-duration: 15s;
+  animation-delay: 2s;
+}
+
+.bubble-3 {
+  width: 50px;
+  height: 50px;
+  left: 50%;
+  bottom: -100px;
+  animation-duration: 18s;
+  animation-delay: 4s;
+}
+
+.bubble-4 {
+  width: 35px;
+  height: 35px;
+  left: 70%;
+  bottom: -100px;
+  animation-duration: 14s;
+  animation-delay: 1s;
+}
+
+.bubble-5 {
+  width: 45px;
+  height: 45px;
+  left: 85%;
+  bottom: -100px;
+  animation-duration: 16s;
+  animation-delay: 3s;
+}
+
+.bubble-6 {
+  width: 55px;
+  height: 55px;
+  left: 40%;
+  bottom: -100px;
+  animation-duration: 20s;
+  animation-delay: 5s;
+}
+
+@keyframes bubbleFloat {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+    transform: translateX(0) scale(1);
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    bottom: 110vh;
+    opacity: 0;
+    transform: translateX(100px) scale(1.2);
+  }
+}
+
+.dark-mode .bubble {
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.6),
+    rgba(94, 234, 212, 0.4)
+  );
+  box-shadow: 
+    inset 0 0 20px rgba(255, 255, 255, 0.2),
+    0 0 20px rgba(94, 234, 212, 0.3);
+}
+
+/* Water droplets - subtle floating elements */
+.water-background::before,
+.water-background::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(45, 212, 191, 0.2) 0%,
+    transparent 70%
+  );
+  filter: blur(30px);
+}
+
+.water-background::before {
+  width: 400px;
+  height: 400px;
+  top: 10%;
+  left: 20%;
+  animation: float 15s ease-in-out infinite;
+}
+
+.water-background::after {
+  width: 300px;
+  height: 300px;
+  bottom: 20%;
+  right: 15%;
+  animation: float 18s ease-in-out infinite reverse;
+}
+
+/* Mobile optimization - reduce effects */
+@media (max-width: 968px) {
+  .cursor-glow {
+    display: none; /* Hide on mobile for performance */
+  }
+  
+  .water-layer {
+    opacity: 0.08; /* Reduce opacity on mobile */
+  }
+  
+  .water-ripple {
+    animation-duration: 1.5s; /* Faster ripples */
+  }
 }
 
 .container {
@@ -481,8 +776,12 @@ body {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #fafafa 0%, #f0fdfc 100%);
+  background: linear-gradient(135deg, rgba(250, 250, 250, 0.7) 0%, rgba(240, 253, 252, 0.7) 100%);
   overflow: hidden;
+}
+
+.dark-mode .hero-bg {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.7) 100%);
 }
 
 .gradient-orb {
@@ -1876,3 +2175,4 @@ section {
 .scroll-indicator {
   transition: opacity 0.8s ease, transform 0.8s ease, background-color 0.3s ease !important;
 }
+

@@ -9,6 +9,8 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [ripples, setRipples] = useState([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +35,35 @@ function App() {
     
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Mouse move handler for interactive water effect
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    const handleClick = (e) => {
+      const newRipple = {
+        x: e.clientX,
+        y: e.clientY,
+        id: Date.now(),
+      };
+      setRipples((prev) => [...prev, newRipple]);
+      
+      // Remove ripple after animation
+      setTimeout(() => {
+        setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
+      }, 2000);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('click', handleClick);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('click', handleClick);
+    };
   }, []);
 
   // Dark mode effect
@@ -137,6 +168,42 @@ function App() {
 
   return (
     <div className="app">
+      {/* Interactive Water Background */}
+      <div className="water-background">
+        <div className="water-layer water-layer-1"></div>
+        <div className="water-layer water-layer-2"></div>
+        <div className="water-layer water-layer-3"></div>
+        
+        {/* Floating bubbles */}
+        <div className="bubble bubble-1"></div>
+        <div className="bubble bubble-2"></div>
+        <div className="bubble bubble-3"></div>
+        <div className="bubble bubble-4"></div>
+        <div className="bubble bubble-5"></div>
+        <div className="bubble bubble-6"></div>
+        
+        {/* Mouse follower */}
+        <div 
+          className="cursor-glow"
+          style={{
+            left: `${mousePosition.x}px`,
+            top: `${mousePosition.y}px`,
+          }}
+        ></div>
+        
+        {/* Click ripples */}
+        {ripples.map((ripple) => (
+          <div
+            key={ripple.id}
+            className="water-ripple"
+            style={{
+              left: `${ripple.x}px`,
+              top: `${ripple.y}px`,
+            }}
+          ></div>
+        ))}
+      </div>
+      
       {/* Preloader */}
       {isLoading && (
         <div className="preloader">
@@ -518,3 +585,4 @@ function App() {
 }
 
 export default App;
+
