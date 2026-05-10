@@ -105,14 +105,21 @@ function App() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          // Add visible class when entering viewport
           if (entry.isIntersecting) {
-            setIsVisible((prev) => ({ ...prev, [entry.target.id]: true }));
-            // Add 'visible' class for CSS animations
             entry.target.classList.add('visible');
+            setIsVisible((prev) => ({ ...prev, [entry.target.id]: true }));
+          } else {
+            // Remove visible class when leaving viewport (for re-animation)
+            entry.target.classList.remove('visible');
+            setIsVisible((prev) => ({ ...prev, [entry.target.id]: false }));
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
+      { 
+        threshold: 0.1, 
+        rootMargin: '0px 0px -50px 0px' // Trigger slightly before element enters
+      }
     );
 
     document.querySelectorAll('.observe').forEach((el) => observer.observe(el));
@@ -585,4 +592,3 @@ function App() {
 }
 
 export default App;
-

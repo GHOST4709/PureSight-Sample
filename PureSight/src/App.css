@@ -1145,12 +1145,19 @@ section {
 .observe {
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.8s ease;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.observe[id]:not([id=""]) {
+/* Visible state - triggers when in viewport */
+.observe.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* When element leaves viewport, it returns to hidden state */
+.observe:not(.visible) {
+  opacity: 0;
+  transform: translateY(30px);
 }
 
 .problem-card:hover {
